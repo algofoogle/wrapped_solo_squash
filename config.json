@@ -1,14 +1,15 @@
 {
-    "DESIGN_NAME": "project name",
+    "DESIGN_NAME": "wrapped_solo_squash",
     "RUN_KLAYOUT_XOR": "0",
     "RUN_KLAYOUT_DRC": "0",
     "PL_RESIZER_BUFFER_OUTPUT_PORTS": "0",
-    "VERILOG_FILES": [ "dir::wrapper.v",
-        "dir::other source files.v",
-        "dir::other source files.v"
-            ],
+    "VERILOG_FILES": [
+        "dir::wrapper.v",
+        "dir::solo_squash/src/solo_squash.v",
+        "dir::solo_squash/src/solo_squash_caravel.v"
+    ],
     "FP_SIZING": "absolute",
-    "DIE_AREA": "0 0 180 210",
+    "DIE_AREA": "0 0 270 270",
     "PL_TARGET_DENSITY": "0.4",
     "SYNTH_DEFINES": "MPRJ_IO_PADS=38",
     "CLOCK_PERIOD": "10",
@@ -18,5 +19,6 @@
     "VDD_NETS": ["vccd1"],
     "GND_NETS": ["vssd1"],
     "FP_IO_VTHICKNESS_MULT": "4",
-    "FP_IO_HTHICKNESS_MULT": "4"
+    "FP_IO_HTHICKNESS_MULT": "4",
+    "SYNTH_MAX_FANOUT": 6
 }
