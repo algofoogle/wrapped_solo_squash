@@ -3,7 +3,7 @@
     `define MPRJ_IO_PADS 38    
 `endif
 
-//`define USE_WB  1
+`define USE_WB  1   // Using just wb_rst_i for my design's main reset.
 `define USE_LA  1
 `define USE_IO  1
 //`define USE_SHARED_OPENRAM 1
@@ -11,7 +11,7 @@
 //`define USE_IRQ 1
 
 // update this to the name of your module
-module wrapped_project(
+module wrapped_solo_squash(
 `ifdef USE_POWER_PINS
     inout vccd1,	// User area 1 1.8V supply
     inout vssd1,	// User area 1 digital ground
@@ -145,12 +145,40 @@ module wrapped_project(
     `endif
     `endif
 
-    // permanently set oeb so that outputs are always enabled: 0 is output, 1 is high-impedance
-    assign buf_io_oeb = {`MPRJ_IO_PADS{1'b0}};
+    // Our design below asserts output enables 20:13 when active.
+    // For output enables not otherwise controlled by our design,
+    // set them permanently enabled (0 is output, 1 is high-impedance):
+    assign buf_io_oeb[`MPRJ_IO_PADS-1:21]   = {(`MPRJ_IO_PADS-21){1'b0}};
+    assign buf_io_oeb[12:0]                 = {13{1'b0}};
 
     // Instantiate your module here, 
     // connecting what you need of the above signals. 
     // Use the buffered outputs for your module's outputs.
+    solo_squash_caravel adapter(
+        .wb_clk_i           (wb_clk_i),
+        .wb_rst_i           (wb_rst_i),
+
+        .gpio_ready         (la1_data_in[0]),   // In this wrapper, this is la_data_in[32].
+
+        .ext_reset_n        (io_in[ 8]),
+        .pause_n            (io_in[ 9]),
+        .new_game_n         (io_in[10]),
+        .down_key_n         (io_in[11]),
+        .up_key_n           (io_in[12]),
+
+        .red                (buf_io_out[13]),
+        .green              (buf_io_out[14]),
+        .blue               (buf_io_out[15]),
+        .hsync              (buf_io_out[16]),
+        .vsync              (buf_io_out[17]),
+        .speaker            (buf_io_out[18]),
+
+        .debug_design_reset (buf_io_out[19]),
+        .debug_gpio_ready   (buf_io_out[20]),
+
+        .design_oeb         (buf_io_oeb[18:13]),
+        .debug_oeb          (buf_io_oeb[20:19])
+    );
 
 endmodule 
 `default_nettype wire
