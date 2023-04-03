@@ -9,7 +9,7 @@
         "dir::solo_squash/src/solo_squash_caravel.v"
     ],
     "FP_SIZING": "absolute",
-    "DIE_AREA": "0 0 270 270",
+    "DIE_AREA": "0 0 200 200",
     "PL_TARGET_DENSITY": "0.4",
     "SYNTH_DEFINES": "MPRJ_IO_PADS=38",
     "CLOCK_PERIOD": "10",
