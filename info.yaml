@@ -1,21 +1,21 @@
 --- 
 # information
 project: 
-  title: "title"
-  description: "description"
-  picture: docs/empty.png
-  author: "Author"
-  license: LICENSE
+  title: "Solo Squash Game"
+  description: "A simple single-player variant of the game 'Pong' generating a VGA display and simple speaker tones"
+  picture: docs/wrapped_solo_squash_hero.png
+  author: "Anton Maurovic"
+  license: Apache-2.0
 
 # optional interfaces you want to use: gpio, la1, la2, la3, irq, clk2, wishbone & openram
-interfaces: ['la1', 'gpio']
+interfaces: ['wishbone', 'gpio']
 
 # test within caravel
 caravel_test:
   recipe: "coco_test"
   directory: "caravel_test"
   id: 1
-  module_name: "wrapped_project"
+  module_name: "test_solo_squash_caravel"
 
 # module test
 module_test:
@@ -30,16 +30,17 @@ wrapper_proof:
 
 # openlane config, used in case I need to re-harden
 openlane:
-  config: "config.tcl"
+  config: "config.json"
 
 # source required for various configs and module instantiation
 source:
     - wrapper.v
-    - other source files here
+    - solo_squash/src/solo_squash.v
+    - solo_squash/src/solo_squash_caravel.v
 
 # gds - check nothing on metal 5, DRC & LVS
 final:
   directory: "final"
-  gds_filename: "gds/project.gds"
-  lvs_filename: "verilog/gl/project.v"
-  lef_filename: "lef/project.lef"
+  gds_filename: "gds/wrapped_solo_squash.gds"
+  lvs_filename: "verilog/gl/wrapped_solo_squash.v"
+  lef_filename: "lef/wrapped_solo_squash.lef"
