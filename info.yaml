@@ -10,27 +10,27 @@ project:
 # optional interfaces you want to use: gpio, la1, la2, la3, irq, clk2, wishbone & openram
 interfaces: ['wishbone', 'gpio']
 
-# test within caravel
+# Stuff to help verification of our design within caravel (i.e. caravel_user_project):
 caravel_test:
-  recipe: "coco_test"
-  directory: "caravel_test"
-  id: 1
-  module_name: "test_solo_squash_caravel"
+  recipe: coco_test                 # Makefile recipe to exercise tests of our design in caravel.
+  directory: solo_squash_caravel    # Name of the directory in this repo that will be copied to verilog/dv/
+  id: 1                             # Our PROJECT_ID (to identify which LA0 bit is our 'active' line).
+  module_name: wrapped_solo_squash  # Verilog module name that is our design to be instantiated in user_project_wrapper.
 
-# module test
+# How to run tests of the design itself, in isolation:
 module_test:
-  recipe: "all" 
-  directory: "project directory"
-  makefile: "Makefile"
+  recipe: test                      # Makefile recipe that runs tests.
+  directory: solo_squash            # The working directory from which tests should be run.
+  makefile: Makefile                # Makefile (inside 'directory') to use.
 
 # run the wrapper formal proof
 wrapper_proof:
   directory: "."
-  sby: "properties.sby"
+  sby: properties.sby
 
 # openlane config, used in case I need to re-harden
 openlane:
-  config: "config.json"
+  config: config.json
 
 # source required for various configs and module instantiation
 source:
